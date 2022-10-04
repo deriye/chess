@@ -35,6 +35,15 @@ const Row = styled.div`
 }
 */
 
+const getSquare = (pieceString, colorString, clickedSquareString, handleClick, squareAddress, availableMoves) => {
+    return <Square
+                piece={pieceString}
+                color={colorString}
+                clicked={clickedSquareString == squareAddress}
+                highlight={ availableMoves != null ? availableMoves.includes(squareAddress) : null}
+                handleClick={() => handleClick(squareAddress[0], squareAddress[1])} />
+}
+
 const Board = () => {
     const [board, setBoard] = useState({
         8: {a: "♜", b: "♞", c: "♝", d: "♛", e: "♚", f: "♝", g: "♞", h: "♜"},
@@ -47,8 +56,11 @@ const Board = () => {
         1: {a: "♖", b: "♘", c: "♗", d: "♕", e: "♔", f: "♗", g: "♘", h: "♖"}
     });
 
-    const getSquare = (letter, number) => {
-        console.log(board[number][letter])
+    const [clickedSquare, setClickedSquare] = useState("")
+
+    const [availableMoves, setAvailableMoves] = useState([]);
+
+    const getPiece = (letter, number) => {
         return board[number][letter]
     }
 
@@ -65,8 +77,18 @@ const Board = () => {
 
     }
 
-    const showPossibleMoves = (location, piece) => {
+    const handleClick = (letter, number) => {
+        setAvailableMoves([])
+        setClickedSquare(letter + number)
+        showPossibleMoves(letter, number)
+    }
 
+    const showPossibleMoves = (letter, number) => {
+        var piece = getPiece(letter, number);
+        
+        if (piece == "♙") {
+            setAvailableMoves([letter + (parseInt(number)+1)])
+        }
     }
     
     /* 
@@ -87,84 +109,84 @@ const Board = () => {
     return (
         <BoardContainer>
             <Row>
-                <Square piece={getSquare('a',8)} color="white"/>
-                <Square piece={getSquare('b',8)} />
-                <Square piece={getSquare('c',8)} color="white"/>
-                <Square piece={getSquare('d',8)} />
-                <Square piece={getSquare('e',8)} color="white"/>
-                <Square piece={getSquare('f',8)} />
-                <Square piece={getSquare('g',8)} color="white"/>
-                <Square piece={getSquare('h',8)} />
+                {getSquare(getPiece('a',8), "white", clickedSquare, handleClick, "a8", availableMoves)}
+                {getSquare(getPiece('b',8), "black", clickedSquare, handleClick, "b8", availableMoves)}
+                {getSquare(getPiece('c',8), "white", clickedSquare, handleClick, "c8", availableMoves)}
+                {getSquare(getPiece('d',8), "black", clickedSquare, handleClick, "d8", availableMoves)}
+                {getSquare(getPiece('e',8), "white", clickedSquare, handleClick, "e8", availableMoves)}
+                {getSquare(getPiece('f',8), "black", clickedSquare, handleClick, "f8", availableMoves)}
+                {getSquare(getPiece('g',8), "white", clickedSquare, handleClick, "g8", availableMoves)}
+                {getSquare(getPiece('h',8), "black", clickedSquare, handleClick, "h8", availableMoves)}
             </Row>
             <Row>
-                <Square piece={getSquare('a',7)} clicked/>
-                <Square piece={getSquare('b',7)} color="white"/>
-                <Square piece={getSquare('c',7)} />
-                <Square piece={getSquare('d',7)} color="white"/>
-                <Square piece={getSquare('e',7)} />
-                <Square piece={getSquare('f',7)} color="white"/>
-                <Square piece={getSquare('g',7)} />
-                <Square piece={getSquare('h',7)} color="white"/>
+                {getSquare(getPiece('a',7), "black", clickedSquare, handleClick, "a7", availableMoves)}
+                {getSquare(getPiece('b',7), "white", clickedSquare, handleClick, "b7", availableMoves)}
+                {getSquare(getPiece('c',7), "black", clickedSquare, handleClick, "c7", availableMoves)}
+                {getSquare(getPiece('d',7), "white", clickedSquare, handleClick, "d7", availableMoves)}
+                {getSquare(getPiece('e',7), "black", clickedSquare, handleClick, "e7", availableMoves)}
+                {getSquare(getPiece('f',7), "white", clickedSquare, handleClick, "f7", availableMoves)}
+                {getSquare(getPiece('g',7), "black", clickedSquare, handleClick, "g7", availableMoves)}
+                {getSquare(getPiece('h',7), "white", clickedSquare, handleClick, "h7", availableMoves)}
             </Row>
             <Row>
-                <Square piece={getSquare('a',6)} color="white" highlight/>
-                <Square piece={getSquare('b',6)} />
-                <Square piece={getSquare('c',6)} color="white"/>
-                <Square piece={getSquare('d',6)} />
-                <Square piece={getSquare('e',6)} color="white"/>
-                <Square piece={getSquare('f',6)} />
-                <Square piece={getSquare('g',6)} color="white"/>
-                <Square piece={getSquare('h',6)} />
+                {getSquare(getPiece('a',6), "white", clickedSquare, handleClick, "a6", availableMoves)}
+                {getSquare(getPiece('b',6), "black", clickedSquare, handleClick, "b6", availableMoves)}
+                {getSquare(getPiece('c',6), "white", clickedSquare, handleClick, "c6", availableMoves)}
+                {getSquare(getPiece('d',6), "black", clickedSquare, handleClick, "d6", availableMoves)}
+                {getSquare(getPiece('e',6), "white", clickedSquare, handleClick, "e6", availableMoves)}
+                {getSquare(getPiece('f',6), "black", clickedSquare, handleClick, "f6", availableMoves)}
+                {getSquare(getPiece('g',6), "white", clickedSquare, handleClick, "g6", availableMoves)}
+                {getSquare(getPiece('h',6), "black", clickedSquare, handleClick, "h6", availableMoves)}
             </Row>
             <Row>
-                <Square piece={getSquare('a',5)} />
-                <Square piece={getSquare('b',5)} color="white"/>
-                <Square piece={getSquare('c',5)} />
-                <Square piece={getSquare('d',5)} color="white"/>
-                <Square piece={getSquare('e',5)} />
-                <Square piece={getSquare('f',5)} color="white"/>
-                <Square piece={getSquare('g',5)} />
-                <Square piece={getSquare('h',5)} color="white"/>
+                {getSquare(getPiece('a',5), "black", clickedSquare, handleClick, "a5", availableMoves)}
+                {getSquare(getPiece('b',5), "white", clickedSquare, handleClick, "b5", availableMoves)}
+                {getSquare(getPiece('c',5), "black", clickedSquare, handleClick, "c5", availableMoves)}
+                {getSquare(getPiece('d',5), "white", clickedSquare, handleClick, "d5", availableMoves)}
+                {getSquare(getPiece('e',5), "black", clickedSquare, handleClick, "e5", availableMoves)}
+                {getSquare(getPiece('f',5), "white", clickedSquare, handleClick, "f5", availableMoves)}
+                {getSquare(getPiece('g',5), "black", clickedSquare, handleClick, "g5", availableMoves)}
+                {getSquare(getPiece('h',5), "white", clickedSquare, handleClick, "h5", availableMoves)}
             </Row>
             <Row>
-                <Square piece={getSquare('a',4)} color="white"/>
-                <Square piece={getSquare('b',4)} />
-                <Square piece={getSquare('c',4)} color="white"/>
-                <Square piece={getSquare('d',4)} />
-                <Square piece={getSquare('e',4)} color="white"/>
-                <Square piece={getSquare('f',4)} />
-                <Square piece={getSquare('g',4)} color="white"/>
-                <Square piece={getSquare('h',4)} />
+                {getSquare(getPiece('a',4), "white", clickedSquare, handleClick, "a4", availableMoves)}
+                {getSquare(getPiece('b',4), "black", clickedSquare, handleClick, "b4", availableMoves)}
+                {getSquare(getPiece('c',4), "white", clickedSquare, handleClick, "c4", availableMoves)}
+                {getSquare(getPiece('d',4), "black", clickedSquare, handleClick, "d4", availableMoves)}
+                {getSquare(getPiece('e',4), "white", clickedSquare, handleClick, "e4", availableMoves)}
+                {getSquare(getPiece('f',4), "black", clickedSquare, handleClick, "f4", availableMoves)}
+                {getSquare(getPiece('g',4), "white", clickedSquare, handleClick, "g4", availableMoves)}
+                {getSquare(getPiece('h',4), "black", clickedSquare, handleClick, "h4", availableMoves)}
             </Row>
             <Row>
-                <Square piece={getSquare('a',3)} />
-                <Square piece={getSquare('b',3)} color="white"/>
-                <Square piece={getSquare('c',3)} />
-                <Square piece={getSquare('d',3)} color="white"/>
-                <Square piece={getSquare('e',3)} />
-                <Square piece={getSquare('f',3)} color="white"/>
-                <Square piece={getSquare('g',3)} />
-                <Square piece={getSquare('h',3)} color="white"/>
+                {getSquare(getPiece('a',3), "black", clickedSquare, handleClick, "a3", availableMoves)}
+                {getSquare(getPiece('b',3), "white", clickedSquare, handleClick, "b3", availableMoves)}
+                {getSquare(getPiece('c',3), "black", clickedSquare, handleClick, "c3", availableMoves)}
+                {getSquare(getPiece('d',3), "white", clickedSquare, handleClick, "d3", availableMoves)}
+                {getSquare(getPiece('e',3), "black", clickedSquare, handleClick, "e3", availableMoves)}
+                {getSquare(getPiece('f',3), "white", clickedSquare, handleClick, "f3", availableMoves)}
+                {getSquare(getPiece('g',3), "black", clickedSquare, handleClick, "g3", availableMoves)}
+                {getSquare(getPiece('h',3), "white", clickedSquare, handleClick, "h3", availableMoves)}
             </Row>
             <Row>
-                <Square piece={getSquare('a',2)} color="white"/>
-                <Square piece={getSquare('b',2)} />
-                <Square piece={getSquare('c',2)} color="white"/>
-                <Square piece={getSquare('d',2)} />
-                <Square piece={getSquare('e',2)} color="white"/>
-                <Square piece={getSquare('f',2)} />
-                <Square piece={getSquare('g',2)} color="white"/>
-                <Square piece={getSquare('h',2)} />
+                {getSquare(getPiece('a',2), "white", clickedSquare, handleClick, "a2", availableMoves)}
+                {getSquare(getPiece('b',2), "black", clickedSquare, handleClick, "b2", availableMoves)}
+                {getSquare(getPiece('c',2), "white", clickedSquare, handleClick, "c2", availableMoves)}
+                {getSquare(getPiece('d',2), "black", clickedSquare, handleClick, "d2", availableMoves)}
+                {getSquare(getPiece('e',2), "white", clickedSquare, handleClick, "e2", availableMoves)}
+                {getSquare(getPiece('f',2), "black", clickedSquare, handleClick, "f2", availableMoves)}
+                {getSquare(getPiece('g',2), "white", clickedSquare, handleClick, "g2", availableMoves)}
+                {getSquare(getPiece('h',2), "black", clickedSquare, handleClick, "h2", availableMoves)}
             </Row>
             <Row>
-                <Square piece={getSquare('a',1)} />
-                <Square piece={getSquare('b',1)} color="white"/>
-                <Square piece={getSquare('c',1)} />
-                <Square piece={getSquare('d',1)} color="white"/>
-                <Square piece={getSquare('e',1)} />
-                <Square piece={getSquare('f',1)} color="white"/>
-                <Square piece={getSquare('g',1)} />
-                <Square piece={getSquare('h',1)} color="white"/>
+                {getSquare(getPiece('a',1), "black", clickedSquare, handleClick, "a1", availableMoves)}
+                {getSquare(getPiece('b',1), "white", clickedSquare, handleClick, "b1", availableMoves)}
+                {getSquare(getPiece('c',1), "black", clickedSquare, handleClick, "c1", availableMoves)}
+                {getSquare(getPiece('d',1), "white", clickedSquare, handleClick, "d1", availableMoves)}
+                {getSquare(getPiece('e',1), "black", clickedSquare, handleClick, "e1", availableMoves)}
+                {getSquare(getPiece('f',1), "white", clickedSquare, handleClick, "f1", availableMoves)}
+                {getSquare(getPiece('g',1), "black", clickedSquare, handleClick, "g1", availableMoves)}
+                {getSquare(getPiece('h',1), "white", clickedSquare, handleClick, "h1", availableMoves)}
             </Row>
             {/*<Row>
                 <input type="text" />
